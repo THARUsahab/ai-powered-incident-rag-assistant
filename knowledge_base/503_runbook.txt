@@ -1,0 +1,62 @@
+
+INCIDENT RUNBOOK: HTTP 503 SERVICE UNAVAILABLE
+
+ERROR:
+HTTP 503 - Service Unavailable
+
+DESCRIPTION:
+The server is temporarily unable to handle requests.
+The actual root cause must be verified using logs and metrics.
+
+POSSIBLE CAUSES:
+1. High CPU or memory utilization.
+2. Application pods are unhealthy or restarting.
+3. Kubernetes service has no healthy endpoints.
+4. Load balancer health checks are failing.
+5. Application deployment or maintenance is in progress.
+6. Backend database or dependent service is unavailable.
+
+TROUBLESHOOTING STEPS:
+
+Step 1: Check Kubernetes pods
+kubectl get pods -A
+
+Step 2: Check pod details
+kubectl describe pod <pod-name> -n <namespace>
+
+Step 3: Check application logs
+kubectl logs <pod-name> -n <namespace> --tail=100
+
+Step 4: Check previous container logs
+kubectl logs <pod-name> -n <namespace> --previous
+
+Step 5: Check resource usage
+kubectl top pods -n <namespace>
+kubectl top nodes
+
+Step 6: Check Kubernetes service and endpoints
+kubectl get svc -n <namespace>
+kubectl get endpointslices -n <namespace>
+
+Step 7: Check recent deployments
+kubectl rollout history deployment/<deployment-name> -n <namespace>
+
+Step 8: Check AWS load balancer target health,
+CloudWatch metrics and application monitoring dashboards.
+
+RECOMMENDED REMEDIATION:
+- Restart or roll back a deployment only after confirming evidence.
+- Scale workloads if metrics confirm insufficient capacity.
+- Fix failing readiness probes or unhealthy application dependencies.
+- Investigate database connectivity and application exceptions.
+- Escalate if the issue affects production availability.
+
+VALIDATION:
+1. Verify healthy Kubernetes pods and service endpoints.
+2. Verify load balancer targets are healthy.
+3. Confirm the website returns the expected successful response.
+4. Monitor application logs and error rates after remediation.
+
+IMPORTANT:
+Never claim a confirmed root cause without supporting evidence.
+Do not perform production changes without required approval.

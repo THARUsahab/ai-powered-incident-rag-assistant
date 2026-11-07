@@ -1,0 +1,16 @@
+
+# Secrets
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local vector database
+faiss_index/
+
+# Local logs
+*.log
